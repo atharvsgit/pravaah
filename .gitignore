@@ -191,7 +191,6 @@ android/**/GeneratedPluginRegistrant.java
 .env.development
 .env.test
 .env.production
-config.py
 
 # ================
 # LOG FILES
