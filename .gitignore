@@ -1,0 +1,330 @@
+# ===========================================
+# COMPREHENSIVE GITIGNORE FOR SIH2025 PROJECT
+# ===========================================
+
+# ================
+# OPERATING SYSTEM
+# ================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ================
+# IDE & EDITORS
+# ================
+.idea/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.swp
+*.swo
+*~
+
+# ================
+# PYTHON VIRTUAL ENVIRONMENTS (ALL FORMATS)
+# ================
+# Standard venv
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Virtualenv
+.venv/
+.env/
+.ENV/
+
+# Conda environments
+.conda/
+conda-meta/
+
+# Pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# PyEnv
+.python-version
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.pyc
+*.pyd
+
+# Python testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Python linting and formatting
+.ruff_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ================
+# NODE.JS & NPM
+# ================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build output
+.nuxt
+dist
+
+# Vite build output
+dist/
+
+# ================
+# FLUTTER / DART
+# ================
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+**/pubspec.lock
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# iOS related
+ios/Pods/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/engine
+ios/Flutter/flutter_assets
+ios/.symlinks/
+ios/Runner/GeneratedPluginRegistrant.*
+
+# Android related
+android/.gradle
+android/captures/
+android/gradlew
+android/gradlew.bat
+android/local.properties
+android/**/GeneratedPluginRegistrant.java
+
+# ================
+# ENVIRONMENT & CONFIG FILES
+# ================
+.env
+.env.local
+.env..local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.development
+.env.test
+.env.production
+config.py
+
+# ================
+# LOG FILES
+# ================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ================
+# TEMPORARY FILES
+# ================
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# ================
+# PROJECT SPECIFIC
+# ================
+# AI module specific
+ai/twitter-scraper/tatya
+ai/twitter-scraper/since_id.txt
+ai/youtube-scraper/.yt
+ai/youtube-scraper/yt-env
+tatya
+
+# Backend uploads
+backend/uploads/
+backend/instance/
+
+# Documentation files (if temporary)
+MEDIA_FIXES.md
+PROFILE_SETUP.md
+WORKFLOW.md
+
+# Real env files — never commit
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.development.local
+.env.test.local
+.env.production.local
+# But always keep the example templates
+!.env.example
+!*.env.example
+
+*offline_data.db*
+
+# Local Claude / agent state — never commit
+.claude/
+CLAUDE.md
+CHANGELOG.md
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# Container runtime
+.container-*
+
+
+# Render deployment
+.render/
+
+# Vercel
+.vercel/
+
+# Railway
+.railway/
+
+# AWS
+.aws/
+
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# Database dumps
+*.sql
+
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.cert
+
+# SSH keys
+id_rsa
+id_ed25519
+*.pub
+
+# Sentry
+.sentryclirc
+
+# Performance monitoring
+.lighthouse/
+
+
+
+# Test results
+test-results/
+playwright-report/
+test-output/
+
+
+
+# Flutter build variants
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# iOS build
+**/ios/Runner.app
+**/ios/Runner.app.dSYM.zip
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+
+
+# Package managers
+.pnpm-store/
+.yarn/
+
+# Backup files
+*.bak
+*.backup
+*.orig

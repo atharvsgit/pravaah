@@ -1,0 +1,45 @@
+# Core framework
+fastapi
+uvicorn[standard]
+gunicorn==21.2.0
+
+# Data validation & settings
+pydantic
+pydantic[email]
+pydantic-settings
+python-dotenv
+
+# Database (Postgres async + offline SQLite)
+sqlalchemy[asyncio]
+asyncpg
+psycopg2-binary
+GeoAlchemy2
+aiosqlite
+sqlite-utils
+alembic
+
+# Security & auth
+passlib[bcrypt]
+python-jose[cryptography]
+
+# Messaging / queues
+pika
+aio-pika
+
+# External services
+boto3
+httpx
+requests
+
+# AI (Gemini via LangChain — server-side image analysis)
+langchain_core
+langchain_google_genai
+pillow
+
+# File uploads
+python-multipart
+
+# Production monitoring
+psutil
+
+# --- Dev / test (install with: pip install pytest pytest-asyncio httpx black ruff) ---
