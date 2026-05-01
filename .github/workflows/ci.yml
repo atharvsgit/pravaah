@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, renderDeployment]
+    branches: [main]
   pull_request:
 
 jobs:
@@ -23,16 +23,16 @@ jobs:
 
       - name: Install deps
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-asyncio
+          pip install pytest
 
       - name: Run pytest
         env:
           DATABASE_URL: postgresql+asyncpg://test:test@localhost/test
           SECRET_KEY: ci-test-secret
           ENVIRONMENT: development
-        run: pytest
+        run: pytest -v
 
   web-build:
     runs-on: ubuntu-latest
