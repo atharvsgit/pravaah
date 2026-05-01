@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from app.api.api import api_router
+from app.api import api_router
 from app.core.config import settings
 import os
 import asyncio
