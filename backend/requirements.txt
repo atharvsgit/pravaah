@@ -19,7 +19,7 @@ sqlite-utils
 alembic
 
 # Security & auth
-passlib[bcrypt]
+bcrypt
 python-jose[cryptography]
 
 # Messaging / queues
