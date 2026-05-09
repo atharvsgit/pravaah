@@ -1,275 +1,246 @@
-# SIH 2025 Web Application
+# Pravaah Web Application
 
-A modern React web application built with Vite, featuring 4 main sections: Home, Report, Community, and Profile.
+This directory contains the React client for Pravaah. It is a Vite application that handles user authentication, role-based navigation, citizen reporting, map display, recent report browsing, notification UI, and offline report synchronization.
 
-## Quick Start
+## Runtime
 
 ```bash
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
-
-# Build for production
 npm run build
-
-# Preview production build
+npm run lint
 npm run preview
 ```
 
-## Project Structure
+Create `frontend/web_app/.env.local` from `.env.example`:
 
-```bash
-src/
-├── components/
-│   ├── Layout/
-│   │   ├── Layout.jsx          # Main layout wrapper
-│   │   ├── Navbar.jsx          # Navigation component
-│   │   └── index.js            # Layout exports
-│   └── shared/
-│       ├── Button.jsx          # Reusable button component
-│       ├── Input.jsx           # Reusable input component
-│       ├── Card.jsx            # Reusable card component
-│       └── index.js            # Shared component exports
-├── pages/
-│   ├── Home/
-│   │   ├── Home.jsx            # Home page component
-│   │   └── index.js            # Home exports
-│   ├── Report/
-│   │   ├── Report.jsx          # Report submission page
-│   │   └── index.js            # Report exports
-│   ├── Community/
-│   │   ├── Community.jsx       # Community hub page
-│   │   └── index.js            # Community exports
-│   └── Profile/
-│       ├── Profile.jsx         # User profile page
-│       └── index.js            # Profile exports
-├── hooks/
-│   ├── useApi.js               # API call hooks
-│   └── useLocalStorage.js      # LocalStorage hook
-├── utils/
-│   ├── api.js                  # Axios configuration
-│   ├── constants.js            # App constants
-│   └── helpers.js              # Utility functions
-├── services/                   # API service functions
-├── assets/                     # Static assets
-├── App.jsx                     # Main app component
-└── main.jsx                    # App entry point
-```
-
-## Tech Stack
-
-- **React 18** - UI library
-- **Vite** - Build tool and dev server
-- **React Router DOM** - Client-side routing
-- **Tailwind CSS** - Utility-first CSS framework
-- **Axios** - HTTP client
-- **Lucide React** - Icon library
-- **ESLint & Prettier** - Code formatting and linting
-
-## Collaborative Workflow
-
-### Branch Strategy
-
-```bash
-main                    # Production-ready code
-├── develop            # Integration branch
-├── feature/home       # Home page features
-├── feature/report     # Report functionality
-├── feature/community  # Community features
-└── feature/profile    # Profile features
-```
-
-### Getting Started for Team Members
-
-1. **Clone and Setup**
-   ```bash
-   git clone <repository-url>
-   cd frontend/web_app
-   npm install
-   ```
-
-2. **Create Feature Branch**
-   ```bash
-   git checkout develop
-   git pull origin develop
-   git checkout -b feature/your-feature-name
-   ```
-
-3. **Development Workflow**
-   ```bash
-   # Start development server
-   npm run dev
-   
-   # Make your changes
-   # Test your changes
-   
-   # Commit your work
-   git add .
-   git commit -m "feat: add your feature description"
-   git push origin feature/your-feature-name
-   ```
-
-4. **Create Pull Request**
-   - Create PR from your feature branch to `develop`
-   - Add descriptive title and description
-   - Request review from team members
-   - Ensure all checks pass
-
-### Code Standards
-
-#### File Naming Conventions
-- **Components**: PascalCase (`Button.jsx`, `UserProfile.jsx`)
-- **Pages**: PascalCase (`Home.jsx`, `Report.jsx`)
-- **Utilities**: camelCase (`api.js`, `helpers.js`)
-- **Hooks**: camelCase with `use` prefix (`useApi.js`)
-
-#### Component Structure
-```jsx
-import React from 'react';
-import { PropTypes } from 'prop-types';
-
-const ComponentName = ({ prop1, prop2 }) => {
-  // Component logic here
-  
-  return (
-    <div className="component-wrapper">
-      {/* JSX content */}
-    </div>
-  );
-};
-
-ComponentName.propTypes = {
-  prop1: PropTypes.string.isRequired,
-  prop2: PropTypes.number,
-};
-
-export default ComponentName;
-```
-
-#### Import Order
-1. React and React-related imports
-2. Third-party libraries
-3. Internal components
-4. Utilities and helpers
-5. Styles (if any)
-
-```jsx
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Button, Input } from '../components/shared';
-import { formatDate } from '../utils/helpers';
-```
-
-### Team Responsibilities
-
-#### Developer 1: Home & Report Pages
-- **Home Page** (`src/pages/Home/`)
-  - Dashboard components
-  - Quick stats
-  - Recent activity feed
-  - Navigation shortcuts
-
-- **Report Page** (`src/pages/Report/`)
-  - Report form components
-  - File upload functionality
-  - Location picker
-  - Form validation
-
-#### Developer 2: Community & Profile Pages
-- **Community Page** (`src/pages/Community/`)
-  - Community feed
-  - Post creation
-  - Groups management
-  - Trending topics
-
-- **Profile Page** (`src/pages/Profile/`)
-  - User profile management
-  - Settings panels
-  - Activity history
-  - Achievements
-
-### Shared Responsibilities
-- **Layout Components** (`src/components/Layout/`)
-- **Shared Components** (`src/components/shared/`)
-- **Utilities** (`src/utils/`)
-- **API Integration** (`src/services/`)
-
-## Development Guidelines
-
-### Before Starting Work
-1. Pull latest changes from `develop`
-2. Create feature branch
-3. Check existing components in `shared/` before creating new ones
-4. Review constants in `utils/constants.js`
-
-### During Development
-1. Use existing shared components when possible
-2. Follow Tailwind CSS utility classes
-3. Add proper error handling
-4. Write meaningful commit messages
-5. Test your changes thoroughly
-
-### Before Submitting PR
-1. Run linting: `npm run lint`
-2. Format code: `npm run format`
-3. Test build: `npm run build`
-4. Check for console errors
-5. Verify responsive design
-
-### Code Review Checklist
-- [ ] Code follows project structure
-- [ ] Components are reusable and well-structured
-- [ ] Proper error handling implemented
-- [ ] Responsive design works on mobile/desktop
-- [ ] No console errors or warnings
-- [ ] Meaningful variable and function names
-- [ ] Comments added for complex logic
-
-## Deployment
-
-### Environment Variables
-Create `.env` file in the root directory:
 ```env
-REACT_APP_API_URL=http://localhost:8000/api
-REACT_APP_ENVIRONMENT=development
+VITE_API_BASE_URL=http://localhost:8000
+VITE_ENVIRONMENT=development
 ```
 
-### Build Commands
-```bash
-# Development build
-npm run build
+The shared API client appends `/api` to `VITE_API_BASE_URL`.
 
-# Production build with environment
-REACT_APP_ENVIRONMENT=production npm run build
+## Application Flow
+
+```mermaid
+flowchart LR
+    main["main.jsx"] --> app["App.jsx"]
+    app --> layout["Layout and Navbar"]
+    app --> auth["Auth page"]
+    app --> citizen["Citizen dashboard"]
+    app --> report["Report page"]
+    app --> role["RoleBasedRoute"]
+
+    auth --> authService["authService"]
+    report --> reportService["reportService"]
+    citizen --> hotspotService["hotspotService"]
+    citizen --> map["MapView"]
+    layout --> notificationService["notificationService"]
+
+    authService --> api["Axios API client"]
+    reportService --> api
+    hotspotService --> api
+    notificationService --> api
 ```
 
-## Troubleshooting
+## Directory Overview
 
-### Common Issues
-1. **Port already in use**: Change port in `vite.config.js`
-2. **Module not found**: Check import paths and file names
-3. **Tailwind not working**: Verify `tailwind.config.js` setup
-4. **API calls failing**: Check CORS settings and API URL
+```text
+src/
++-- assets/          Images and SVG assets used by the UI
++-- components/      Reusable and feature-specific interface components
++-- hooks/           Small custom React hooks
++-- pages/           Route-level screens
++-- services/        API-facing service modules
++-- utils/           Shared helpers, API client, auth utilities, and constants
++-- App.jsx          Route tree and auth state coordination
++-- main.jsx         React entry point
+```
 
-### Getting Help
-1. Check existing issues in the repository
-2. Review this README and project structure
-3. Ask team members in the project channel
-4. Create detailed issue with steps to reproduce
+## Crucial Files
 
-## Additional Notes
+### `src/main.jsx`
 
-- Always use the shared components from `components/shared/`
-- Follow the established routing structure
-- Use the API utility functions for all HTTP requests
-- Maintain consistent styling with Tailwind CSS
-- Keep components small and focused on single responsibility
+This is the browser entry point. It imports global CSS, Leaflet CSS, and renders `<App />` inside `React.StrictMode`.
 
-Happy coding! 
+### `src/App.jsx`
 
-## Expanding the ESLint configuration
+`App.jsx` owns the top-level routing and authentication gate.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Imports route pages, dashboards, shared layout, and auth helpers.
+- Tracks whether auth has been checked and whether a valid token exists.
+- Listens for `storage` and `authTokenChanged` events so login/logout changes update routing in the same tab and across tabs.
+- Redirects `/` to the dashboard that matches the JWT role, or to `/auth` when no valid token exists.
+- Protects dashboard, report, community, and profile routes with `RoleBasedRoute`.
+- Renders `OfflineSync` for logged-in users so locally saved reports can be synchronized.
+
+### `src/utils/api.js`
+
+This file creates the shared Axios client.
+
+- Builds the base URL from `VITE_API_BASE_URL` and appends `/api`.
+- Adds the `Authorization: Bearer <token>` header when `authToken` is present in local storage.
+- Handles `401` responses by clearing the token and returning the user to `/auth`.
+- Normalizes common network and server errors into user-facing messages used by service modules.
+
+### `src/utils/auth.js`
+
+This module contains client-side JWT helpers for routing only.
+
+- `decodeJWT` reads the JWT payload without verifying the signature.
+- `getUserRole` and `getUserId` extract role and subject from the stored token.
+- `hasRole` and `hasAnyRole` support route guards.
+- `getDashboardRoute` maps `citizen`, `official`, and `analyst` roles to dashboard paths.
+- `isTokenExpired` compares the token `exp` claim with the current browser time.
+
+### `src/components/shared/RoleBasedRoute.jsx`
+
+This wrapper protects role-specific routes.
+
+- Redirects unauthenticated users to `/auth`.
+- Redirects authenticated users with the wrong role to their own dashboard.
+- Renders children only when the stored JWT role is allowed.
+
+### `src/components/Layout/Layout.jsx`
+
+Provides the common page frame. It renders the navbar once and uses React Router's `<Outlet />` for the active page content.
+
+### `src/components/Layout/Navbar.jsx`
+
+`Navbar.jsx` contains the primary navigation and notification dropdown.
+
+- Reads the current role from `utils/auth` and builds role-aware navigation links.
+- Loads notifications through `notificationService` and keeps a badge count.
+- Polls for new notifications while the user is logged in.
+- Provides sign-out by clearing `authToken` and redirecting to `/auth`.
+- Handles notification actions such as verify, reject, safe, and not-safe.
+- For safe/not-safe actions, it requests browser geolocation, posts a safety-circle payload through the shared API client, and dispatches an `addSafetyCircle` event for the map.
+
+### `src/pages/Auth/Auth.jsx`
+
+The authentication page manages sign-in and sign-up.
+
+- Maintains the active tab, selected role, form state, validation errors, and visibility toggles.
+- Sign-in validates required fields, calls `authService.login`, stores the JWT as `authToken`, emits auth change events, and routes through the app-level redirect.
+- Sign-up validates required fields, calls `authService.register`, then attempts automatic login using the same credentials.
+- Registration sends `full_name`, email, phone, password, and selected user type to the backend.
+- Connection errors can open the `ConnectionTest` helper.
+
+### `src/pages/Home/Home.jsx`
+
+The citizen dashboard combines live location, report data, map visualization, and safety information.
+
+- Loads report hotspots through `fetchHotspots`.
+- Loads recent reports through `fetchRecentReports`.
+- Requests browser geolocation, reverse-geocodes coordinates with OpenStreetMap Nominatim, and can continue watching the user's location.
+- Renders `MapView` with the user's marker, hazard hotspots, and safety circles.
+- Attempts to load persisted safety circles and also listens for local `addSafetyCircle` events from the navbar.
+- Displays recent reports, a feed component, risk information, safety recommendations, and nearby safe-place cards.
+
+### `src/components/MapView.jsx`
+
+The Leaflet map wrapper.
+
+- Configures Leaflet marker icons for Vite bundling.
+- Uses OpenStreetMap tiles through `react-leaflet`.
+- Re-centers the map when `center` or `zoom` props change.
+- Renders regular markers for the user's location.
+- Renders report hotspots as scaled `CircleMarker` layers based on confidence.
+- Renders safety circles with their saved color and safe/unsafe status.
+
+### `src/pages/Report/Report.jsx`
+
+The citizen report form handles location, media evidence, voice evidence, and submission.
+
+- Tracks incident type, description, images, videos, uploaded images, voice recording state, and GPS state.
+- Requests and watches browser geolocation so reports include latitude and longitude.
+- Lets users attach photos, videos, and a recorded audio blob.
+- Uses `uploadProfilePicture` for image analysis/upload flow and can autofill hazard type and description when a result includes hazard metadata.
+- On submit, validates GPS availability and calls `submitReport` with hazard type, description, media, audio, latitude, and longitude.
+- Resets form state after a successful submission.
+
+### `src/components/OfflineSync.jsx`
+
+This component coordinates browser-side offline report recovery.
+
+- Tracks `navigator.onLine` and listens for browser online/offline events.
+- Reads locally saved reports from `localStorage`.
+- Converts stored base64 media back into `File` objects.
+- Re-submits unsynced reports to `/api/reports/submit` when the browser is online.
+- Removes successfully synced local reports from `localStorage`.
+- Shows a compact sync status indicator in the lower-right corner.
+
+## Services
+
+### `src/services/authService.js`
+
+Wraps auth API calls.
+
+- `register` maps the UI user type to the backend role and posts to `/auth/register`.
+- `login` submits an OAuth2-compatible form payload to `/auth/login`.
+- Both functions convert backend/network failures into clearer thrown errors for UI display.
+
+### `src/services/reportService.js`
+
+Handles report submission and report-form utilities.
+
+- Maps UI incident labels to backend hazard enum values.
+- Builds `FormData` with `user_hazard_type`, `user_description`, and `media_files`.
+- Sends latitude and longitude in request headers, matching the backend endpoint.
+- Saves reports into `localStorage` when the browser is offline or a network error occurs.
+- Includes helpers for geolocation, validation, file size formatting, and media file validation.
+
+### `src/services/hotspotService.js`
+
+Fetches map/dashboard report data.
+
+- `fetchHotspots` calls `/reports/hotspots` and normalizes confidence to `0..1`.
+- `fetchRecentReports` calls `/reports/recent` and maps backend fields into card-friendly values.
+
+### `src/services/notificationService.js`
+
+Provides notification polling and action helpers.
+
+- Polls `/notifications/count` and refreshes `/notifications/recent` when new items appear.
+- Exposes listener registration methods used by the navbar.
+- Provides helper calls for verify, deny, and test notification endpoints.
+
+### `src/services/feedService.js`
+
+Fetches feed data from feed endpoints and formats source, urgency, and sentiment display metadata.
+
+### `src/services/userService.js`
+
+Contains profile, stats, activity, report, badge, reward, and profile-picture upload calls.
+
+## Components and Pages
+
+- `src/components/Feed/Feed.jsx`: Loads and renders feed cards with refresh and loading states.
+- `src/components/Feed/FeedCard.jsx`: Displays one feed item.
+- `src/components/Notifications/NotificationCenter.jsx`: Standalone notification UI.
+- `src/components/official/*`: Official dashboard and modal components.
+- `src/components/analyst/AnalystDashboard.jsx`: Analyst dashboard screen.
+- `src/components/OfflineReportForm.jsx`: Offline report form component.
+- `src/components/ReportForm.jsx` and `ReportForm.css`: Alternate report-form component and styles.
+- `src/components/SafetyStatusModal.jsx`: Modal for safety status interactions.
+- `src/components/shared/Button.jsx`, `Card.jsx`, `Input.jsx`: Small reusable UI primitives.
+- `src/components/shared/ConnectionTest.jsx`: Diagnostic UI for backend connectivity checks.
+- `src/components/shared/RoleGuard.jsx`: Role-guard helper component.
+- `src/pages/Community/Community.jsx`: Community page route.
+- `src/pages/Profile/Profile.jsx`: User profile page route.
+- `src/pages/*/index.js`: Barrel exports for page imports.
+
+## Styling and Assets
+
+- `src/index.css`: Tailwind and global CSS entry.
+- `src/App.css`: App-level styles.
+- `tailwind.config.js`: Tailwind content scanning and theme extension.
+- `postcss.config.js`: PostCSS setup for Tailwind and Autoprefixer.
+- `src/assets/`: Static images and SVGs used by the interface.
+
+## Build Configuration
+
+- `vite.config.js`: Vite and React plugin configuration.
+- `eslint.config.js`: ESLint configuration for JavaScript and JSX.
+- `package.json`: Runtime dependencies, dev dependencies, and npm scripts.

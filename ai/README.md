@@ -1,62 +1,103 @@
-# AI services (NLP worker)
+# AI Worker
 
-This folder contains the NLP background worker that consumes hazard reports
-from RabbitMQ for analysis.
+This directory contains the standalone NLP worker for Pravaah. The worker consumes report messages from RabbitMQ, classifies the report description, and posts the resulting NLP verification back to the FastAPI backend.
 
-> Note: earlier revisions of this folder also contained `twitter-scraper/` and
-> `youtube-scraper/` subdirs for social-media corroboration. They are not
-> present in this checkout; if you need them, restore from upstream
-> (`seaquel-sih2025/Pravaah`) git history.
-
-## Component
-
-`worker.py` consumes the `nlp_queue` from RabbitMQ. It pulls
-`user_description` and `report_id` from each message and classifies the
-description into a `hazard_type`.
-
-Current state of the worker:
-- Classification goes through an optional Hugging Face Space, configured via
-  `HF_FALLBACK_URL`. If the env var is unset, the worker short-circuits to
-  `{"hazard_type": "other"}` without making a network call.
-- The DB-update step is **not implemented** — there is a TODO to call back
-  into the backend (`POST /api/verifications/nlp`) with the result. Right now
-  the worker logs the classification and ACKs the message. Implement that
-  callback before relying on the worker for confidence scoring.
-
-## Environment
-
-Create `ai/.env`:
-
-| Var | Purpose |
-|-----|---------|
-| `RABBITMQ_URL` | AMQP URL, e.g. `amqp://guest:guest@localhost:5672/` |
-| `BACKEND_URL` | Base URL of the FastAPI backend (used by the not-yet-implemented callback) |
-| `HF_FALLBACK_URL` | Optional. Hugging Face Space `/analyze` endpoint. Leave empty to skip the HF call. |
-| `GEMINI_API_KEY` | Optional. Reserved for when the worker is upgraded to call Gemini directly instead of the HF Space. |
-
-Settings are loaded by `config.py` (pydantic-settings).
-
-## Running
+## Runtime
 
 ```bash
 cd ai
 python -m venv venv
-venv\Scripts\activate            # macOS/Linux: source venv/bin/activate
+venv\Scripts\activate
 pip install -r requirements.txt
+copy .env.example .env
 python worker.py
 ```
 
-The backend's `/rabbitmq/status` endpoint should show `consumer_count > 0`
-on `nlp_queue` once the worker is running.
+## Environment
 
-## Troubleshooting
+```env
+RABBITMQ_URL=amqp://guest:guest@localhost:5672/
+BACKEND_URL=http://localhost:8000
+HF_FALLBACK_URL=
+GEMINI_API_KEY=
+HUGGING_FACE_TOKEN=
+```
 
-- **Worker not consuming?** Verify `RABBITMQ_URL` is reachable and that the
-  `nlp_queue` queue has been declared (the FastAPI backend declares it on
-  startup; if you're running the worker without the backend, declare it
-  manually or run the backend first).
-- **All classifications return `"other"`.** Either `HF_FALLBACK_URL` is unset
-  (intended fallback) or the HF Space is sleeping. Free-tier HF Spaces sleep
-  on idle and the first request after a sleep can time out.
-- **No effect on report confidence.** Expected — see "current state" above;
-  the callback to the backend is still a TODO.
+`HF_FALLBACK_URL` is optional. When it is empty, the worker skips the Hugging Face request and returns `other` as the fallback hazard type.
+
+## Processing Flow
+
+```mermaid
+flowchart LR
+    queue["RabbitMQ nlp_queue"] --> worker["worker.py"]
+    worker --> classifier["Hugging Face fallback classifier"]
+    classifier --> worker
+    worker --> backend["POST /api/verifications/nlp"]
+```
+
+The backend route for NLP verification exists in `backend/app/api/endpoints/verifications.py`. It must be included in the backend API router before this worker callback is reachable through the running API.
+
+## File-Level Explanation
+
+### `worker.py`
+
+This is the worker process and contains the main queue-consumption logic.
+
+#### Imports and configuration
+
+- Loads standard modules for environment values, JSON parsing, HTTP requests, logging, and RabbitMQ access.
+- Imports `settings` from `config.py`.
+- Reads `HF_FALLBACK_URL` from the environment. This controls whether the worker calls an external classifier or returns the local fallback classification.
+
+#### `classify_description_with_hf_api(description)`
+
+This function classifies a report description.
+
+- If `HF_FALLBACK_URL` is not configured, it returns `{"hazard_type": "other"}` immediately.
+- If configured, it sends `{"query": description, "limit": 5}` to the Hugging Face endpoint.
+- It reads the first item from `hazardous_tweets`, extracts the first detected hazard from `ner.hazards`, and normalizes it to lowercase underscore format.
+- If the API fails, returns an empty result, or returns an unexpected shape, it falls back to `other`.
+
+#### `post_nlp_verification(report_id, hazard_type, source)`
+
+This function sends the worker result back to the backend.
+
+- Builds the URL from `BACKEND_URL` and `/api/verifications/nlp`.
+- Posts a JSON payload containing `report_id` and `result_data`.
+- Logs request failures instead of raising them so a backend issue does not permanently block queue consumption.
+
+#### `process_message(channel, method, properties, body)`
+
+This is the RabbitMQ message callback.
+
+- Parses the message body as JSON.
+- Extracts `report_id` and `user_description`.
+- Acknowledges and skips malformed messages that lack required fields.
+- Calls the classifier, extracts the final hazard type, posts the NLP verification to the backend, and acknowledges the message.
+- Rejects unexpected failures with `requeue=False` to prevent repeated processing loops.
+
+#### `start_worker()`
+
+This function starts the blocking RabbitMQ consumer.
+
+- Connects with `pika.BlockingConnection`.
+- Declares `nlp_queue` as durable.
+- Sets `prefetch_count=1` so the worker handles one message at a time.
+- Registers `process_message` as the queue callback.
+- Closes the RabbitMQ connection during shutdown when possible.
+
+### `config.py`
+
+This file defines worker settings with `pydantic-settings`.
+
+- `Settings` reads `.env` values for Gemini, Hugging Face, RabbitMQ, backend URL, and PostgreSQL-related values.
+- The module creates a global `settings` instance used by `worker.py`.
+- It also exports selected values such as `RABBITMQ_URL`, `BACKEND_URL`, and `POSTGRES_CONFIG`.
+
+### `.env.example`
+
+Lists the environment variables expected by the worker process.
+
+### `requirements.txt`
+
+Lists Python dependencies for RabbitMQ consumption, HTTP calls, settings loading, and optional AI integrations.
