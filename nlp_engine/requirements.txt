@@ -1,0 +1,12 @@
+transformers
+torch
+pydantic
+requests
+datasets
+evaluate
+numpy
+seqeval
+peft
+bitsandbytes
+accelerate
+scipy

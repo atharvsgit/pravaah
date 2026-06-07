@@ -1,0 +1,12 @@
+# Virtual Environments
+venv/
+env/
+.env
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# ML Models and Adapters
+# (Excluding these as they are hundreds of megabytes and will break a standard Git push without Git LFS)
+adapters/
