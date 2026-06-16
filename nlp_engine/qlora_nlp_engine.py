@@ -94,13 +94,15 @@ class SamudraWatchNLPEngine:
             if os.path.exists(ner_path):
                 logger.info("Loading PEFT NER Model...")
                 label_list = ["O", "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "B-MISC", "I-MISC"]
+                id2label = {i: label for i, label in enumerate(label_list)}
+                label2id = {label: i for i, label in enumerate(label_list)}
                 base_ner = AutoModelForTokenClassification.from_pretrained(
-                    ner_model_name, num_labels=len(label_list), ignore_mismatched_sizes=True, quantization_config=quantization_config, device_map={"": 0}
+                    ner_model_name, num_labels=len(label_list), id2label=id2label, label2id=label2id, ignore_mismatched_sizes=True, quantization_config=quantization_config, device_map={"": 0}
                 )
                 self.ner_model = PeftModel.from_pretrained(base_ner, ner_path)
                 self.ner_tokenizer = AutoTokenizer.from_pretrained(ner_path)
             else:
-                self.ner_model = AutoModelForTokenClassification.from_pretrained(ner_model_name)
+                self.ner_model = AutoModelForTokenClassification.from_pretrained(ner_model_name, num_labels=len(label_list), id2label=id2label, label2id=label2id)
                 self.ner_tokenizer = AutoTokenizer.from_pretrained(ner_model_name)
                 if self.device != -1: self.ner_model.to('cuda')
                 
